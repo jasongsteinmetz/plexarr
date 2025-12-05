@@ -1,0 +1,167 @@
+services:
+  plex:
+    image: linuxserver/plex:latest
+    container_name: plex
+    restart: always
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - VERSION=docker
+      # NVIDIA SPECIFIC ENV VARS
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      - /var/lib/docker_data/plex:/config
+      - /data:/data
+      # RAM TRANSCODING (Optional but recommended)
+      - /dev/shm:/transcode
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=info # Debug is too noisy for production
+      - TZ=America/New_York
+    volumes:
+      - /var/lib/docker_data/overseerr:/app/config
+    # LOG ROTATION
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - homepage.group=Docker
+      - homepage.name=Overseerr
+      - homepage.icon=overseerr.png
+      - homepage.href=https://requests.streametz.com
+      - homepage.description=Request Manager
+      # CROWDSEC INTEGRATION
+      - "type=overseerr" 
+
+  radarr:
+    container_name: radarr
+    image: linuxserver/radarr:latest
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+    environment:
+      - TZ=America/New_York
+      - UMASK=002
+      - PUID=1004
+      - PGID=1007
+    volumes:
+      - /var/lib/docker_data/radarr:/config:rw
+      # UNIFIED VOLUME MAPPING (Enables Hardlinks)
+      - /data:/data:rw 
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - homepage.group=Docker
+      - homepage.name=Radarr
+      - homepage.icon=radarr.png
+      - homepage.href=https://radarr.streametz.com
+      - homepage.description=Movies
+
+  sabnzbd:
+    container_name: sabnzbd
+    image: linuxserver/sabnzbd:latest
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '16.0' 
+          memory: 16G
+    environment:
+      - TZ=America/New_York
+      - UMASK=002
+      - PUID=1005
+      - PGID=1007
+    volumes:
+      - /var/lib/docker_data/sabnzbd:/config:rw
+      - /data:/data:rw 
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - homepage.group=Docker
+      - homepage.name=Sabnzbd
+      - homepage.icon=sabnzbd.png
+      - homepage.href=https://sabznbd.streametz.com
+      - homepage.description=Downloader
+
+  sonarr:
+    container_name: sonarr
+    image: linuxserver/sonarr:latest
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+    environment:
+      - TZ=America/New_York
+      - UMASK=002
+      - PUID=1003
+      - PGID=1007
+    volumes:
+      - /var/lib/docker_data/sonarr:/config:rw
+      - /data:/data:rw
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - homepage.group=Docker
+      - homepage.name=Sonarr
+      - homepage.icon=sonarr.png
+      - homepage.href=https://sonarr.streametz.com
+      - homepage.description=TV Shows
+
+  tautulli:
+    container_name: tautulli
+    image: linuxserver/tautulli:latest
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+    environment:
+      - TZ=America/New_York
+      - PUID=1002
+      - PGID=1007
+    volumes:
+      - /var/lib/docker_data/tautulli:/config:rw
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - homepage.group=Docker
+      - homepage.name=Tautulli
+      - homepage.icon=tautulli.png
+      - homepage.href=https://stats.streametz.com
+      - homepage.description=Plex Stats
+
+networks:
+  default:
+    name: proxy
+    external: true
