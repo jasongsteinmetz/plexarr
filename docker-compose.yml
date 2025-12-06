@@ -31,7 +31,7 @@ services:
       - homepage.href=https://app.plex.tv/desktop
       # WIDGET CONFIG
       - homepage.widget.type=plex
-      - homepage.widget.url=http://192.168.30.189:32400 # Use LAN IP for Plex
+      - homepage.widget.url=http://freckles:32400 # Use LAN IP for Plex
       - homepage.widget.key=${PLEX_TOKEN}
 
   overseerr:
