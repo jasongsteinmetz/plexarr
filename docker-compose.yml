@@ -24,6 +24,15 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+    labels:
+      - homepage.group=Media
+      - homepage.name=Plex
+      - homepage.icon=plex.png
+      - homepage.href=https://app.plex.tv/desktop
+      # WIDGET CONFIG
+      - homepage.widget.type=plex
+      - homepage.widget.url=http://192.168.30.189:32400 # Use LAN IP for Plex
+      - homepage.widget.key=${PLEX_TOKEN}
 
   overseerr:
     image: sctx/overseerr:latest
@@ -72,11 +81,14 @@ services:
         max-size: "10m"
         max-file: "3"
     labels:
-      - homepage.group=Docker
+      - homepage.group=Media
       - homepage.name=Radarr
       - homepage.icon=radarr.png
       - homepage.href=https://radarr.streametz.com
-      - homepage.description=Movies
+      # WIDGET CONFIG
+      - homepage.widget.type=radarr
+      - homepage.widget.url=http://radarr:7878
+      - homepage.widget.key=${RADARR_API_KEY}
 
   sabnzbd:
     container_name: sabnzbd
@@ -101,11 +113,14 @@ services:
         max-size: "10m"
         max-file: "3"
     labels:
-      - homepage.group=Docker
+      - homepage.group=Downloads
       - homepage.name=Sabnzbd
       - homepage.icon=sabnzbd.png
-      - homepage.href=https://sabznbd.streametz.com
-      - homepage.description=Downloader
+      - homepage.href=https://sab.streametz.com
+      # WIDGET CONFIG
+      - homepage.widget.type=sabnzbd
+      - homepage.widget.url=http://sabnzbd:8080
+      - homepage.widget.key=${SABNZBD_API_KEY}
 
   sonarr:
     container_name: sonarr
@@ -129,11 +144,14 @@ services:
         max-size: "10m"
         max-file: "3"
     labels:
-      - homepage.group=Docker
+      - homepage.group=Media
       - homepage.name=Sonarr
       - homepage.icon=sonarr.png
       - homepage.href=https://sonarr.streametz.com
-      - homepage.description=TV Shows
+      # WIDGET CONFIG
+      - homepage.widget.type=sonarr
+      - homepage.widget.url=http://sonarr:8989
+      - homepage.widget.key=${SONARR_API_KEY}
 
   tautulli:
     container_name: tautulli
@@ -155,11 +173,14 @@ services:
         max-size: "10m"
         max-file: "3"
     labels:
-      - homepage.group=Docker
+      - homepage.group=Media
       - homepage.name=Tautulli
       - homepage.icon=tautulli.png
       - homepage.href=https://stats.streametz.com
-      - homepage.description=Plex Stats
+      # WIDGET CONFIG
+      - homepage.widget.type=tautulli
+      - homepage.widget.url=http://tautulli:8181
+      - homepage.widget.key=${TAUTULLI_API_KEY}
 
 networks:
   default:
