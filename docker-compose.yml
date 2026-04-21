@@ -35,8 +35,8 @@ services:
       - homepage.widget.key=${PLEX_TOKEN}
 
   overseerr:
-    image: sctx/overseerr:latest
-    container_name: overseerr
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
     restart: unless-stopped
     environment:
       - LOG_LEVEL=info # Debug is too noisy for production
@@ -51,15 +51,15 @@ services:
         max-file: "3"
     labels:
       - homepage.group=Media
-      - homepage.name=Overseerr
-      - homepage.icon=overseerr.png
+      - homepage.name=Seerr
+      - homepage.icon=seerr.png
       - homepage.href=https://requests.streametz.com
       # WIDGET CONFIG
-      - homepage.widget.type=overseerr
-      - homepage.widget.url=http://overseerr:5055
+      - homepage.widget.type=seerr
+      - homepage.widget.url=http://seerr:5055
       - homepage.widget.key=${OVERSEERR_API_KEY}
       # CROWDSEC INTEGRATION
-      - "type=overseerr" 
+      - "type=seerr"
 
   radarr:
     container_name: radarr
