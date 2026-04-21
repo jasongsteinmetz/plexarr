@@ -34,7 +34,7 @@ services:
       - homepage.widget.url=http://192.168.30.13:32400 # Use LAN IP for Plex
       - homepage.widget.key=${PLEX_TOKEN}
 
-  overseerr:
+  seerr:
     image: ghcr.io/seerr-team/seerr:latest
     container_name: seerr
     restart: unless-stopped
@@ -42,7 +42,7 @@ services:
       - LOG_LEVEL=info # Debug is too noisy for production
       - TZ=America/New_York
     volumes:
-      - /var/lib/docker_data/overseerr:/app/config
+      - /var/lib/docker_data/seerr:/app/config
     # LOG ROTATION
     logging:
       driver: "json-file"
