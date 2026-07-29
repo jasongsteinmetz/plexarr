@@ -184,6 +184,26 @@ services:
       - homepage.widget.type=tautulli
       - homepage.widget.url=http://tautulli:8181
       - homepage.widget.key=${TAUTULLI_API_KEY}
+      
+  maintainerr:
+    container_name: maintainerr
+    image: ghcr.io/maintainerr/maintainerr:latest
+    restart: always
+    user: "1000:1007" # Native Docker user declaration for permissions
+    environment:
+      - TZ=America/New_York
+    volumes:
+      - /var/lib/docker_data/maintainerr:/opt/data:rw
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - homepage.group=Maintenance
+      - homepage.name=Maintainerr
+      - homepage.icon=maintainerr.png
+      - homepage.href=https://maintainerr.streametz.com
 
 networks:
   default:
