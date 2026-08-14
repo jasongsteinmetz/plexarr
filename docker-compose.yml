@@ -215,6 +215,7 @@ services:
       - PGID=1007
       - TZ=America/New_York
       - ORIGIN=https://profilarr.streametz.com
+      - AUTH=off
 
 networks:
   default:
