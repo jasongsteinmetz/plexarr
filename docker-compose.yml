@@ -214,6 +214,7 @@ services:
       - PUID=1009
       - PGID=1007
       - TZ=America/New_York
+      - ORIGIN=https://profilarr.streametz.com
 
 networks:
   default:
