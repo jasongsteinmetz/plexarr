@@ -6,7 +6,7 @@ services:
     network_mode: host
     environment:
       - PUID=1000
-      - PGID=1000
+      - PGID=1007
       - TZ=America/New_York
       - VERSION=latest
       # NVIDIA SPECIFIC ENV VARS
@@ -189,7 +189,7 @@ services:
     container_name: maintainerr
     image: ghcr.io/maintainerr/maintainerr:latest
     restart: always
-    user: "1000:1007" # Native Docker user declaration for permissions
+    user: "1010:1007" # Native Docker user declaration for permissions
     environment:
       - TZ=America/New_York
     volumes:
@@ -204,6 +204,19 @@ services:
       - homepage.name=Maintainerr
       - homepage.icon=maintainerr.png
       - homepage.href=https://maintainerr.streametz.com
+
+  profilarr:
+    image: ghcr.io/dictionarry-hub/profilarr:latest
+    container_name: profilarr
+    volumes:
+      - /var/lib/docker_data/profilarr/config:/config
+    environment:
+      - PUID=1009
+      - PGID=1007
+      - TZ=America/New_York
+    depends_on:
+      parser:
+        condition: service_healthy
 
 networks:
   default:
