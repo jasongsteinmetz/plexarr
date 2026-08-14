@@ -214,9 +214,6 @@ services:
       - PUID=1009
       - PGID=1007
       - TZ=America/New_York
-    depends_on:
-      parser:
-        condition: service_healthy
 
 networks:
   default:
